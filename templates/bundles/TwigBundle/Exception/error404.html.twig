@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	{{parent()}}
+	Page non trouvée
+{% endblock %}
+
+{% block stylesheets %}
+	{{parent()}}
+	<link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+{% endblock %}
+
+{% block body %}
+
+	<section>
+		<div class="container">
+			<div class="text">
+				<h1>Page non trouvée</h1>
+				<p>Nous ne parvenons pas à trouver la page que vous recherchez. Veuillez vérifier l'URL pour vous assurer qu'il n'y a pas de fautes de frappe.</p>
+				<a href="/" class="home-link">Retour à l'accueil</a>
+			</div>
+			<img class="image" src="{{asset('images/404.png')}}" alt="404">
+		</div>
+	</div>
+</section>{% endblock %}

@@ -1,0 +1,35 @@
+{% macro listCard(listName, read) %}
+	<div class="card" style="width: 18rem;">
+		<div class="card-body">
+			<h5 class="card-title">{{listName}}</h5>
+			<p class="card-text">
+				<div>
+					<input type="checkbox" name="task1" id="task1">
+					<label for="task1">Tâche 1</label>
+				</div>
+				<div>
+					<input type="checkbox" name="task2" id="task2">
+					<label for="task2">Tâche 2</label>
+				</div>
+				<div>
+					<input type="checkbox" name="task3" id="task3">
+					<label for="task3">Tâche 3</label>
+				</div>
+			</p>
+			{% if read %}
+				<a href="/read?listName={{listName}}" class="btn btn-primary" title="Lire">
+					<i class="fa-regular fa-eye"></i>
+				</a>
+			{% endif %}
+
+
+			<a href="/update" class="btn btn-warning" title="Modifier">
+				<i class="fa-solid fa-pen"></i>
+			</a>
+			<a href="/delete" class="btn btn-danger" title="Supprimer">
+				<i class="fa-solid fa-trash"></i>
+			</a>
+
+		</div>
+	</div>
+{% endmacro %}
