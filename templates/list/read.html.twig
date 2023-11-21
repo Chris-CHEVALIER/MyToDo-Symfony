@@ -3,11 +3,11 @@
 
 {% block title %}
 	{{parent()}}
-	{{list}}
+	{{list.name}}
 {% endblock %}
 {% block body %}
 	<h1>Ma liste
-		{{list}}</h1>
+		{{list.name}}</h1>
 	{{listCard.listCard(list, false)}}
 
 {% endblock %}

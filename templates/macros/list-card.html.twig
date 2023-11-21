@@ -1,23 +1,20 @@
-{% macro listCard(listName, read) %}
+{% macro listCard(list, read) %}
 	<div class="card" style="width: 18rem;">
 		<div class="card-body">
-			<h5 class="card-title">{{listName}}</h5>
+			<h5 class="card-title">{{list.name}}</h5>
 			<p class="card-text">
-				<div>
-					<input type="checkbox" name="task1" id="task1">
-					<label for="task1">Tâche 1</label>
-				</div>
-				<div>
-					<input type="checkbox" name="task2" id="task2">
-					<label for="task2">Tâche 2</label>
-				</div>
-				<div>
-					<input type="checkbox" name="task3" id="task3">
-					<label for="task3">Tâche 3</label>
-				</div>
+				{{list.description}}
+			</p>
+			<p class="card-text">
+				{% for todo in list.todos %}
+					<div>
+						<input type="checkbox" name="{{todo}}" id="{{todo}}">
+						<label for="{{todo}}">{{todo}}</label>
+					</div>
+				{% endfor %}
 			</p>
 			{% if read %}
-				<a href="/read?listName={{listName}}" class="btn btn-primary" title="Lire">
+				<a href="/read?listName={{list.name}}" class="btn btn-primary" title="Lire">
 					<i class="fa-regular fa-eye"></i>
 				</a>
 			{% endif %}
