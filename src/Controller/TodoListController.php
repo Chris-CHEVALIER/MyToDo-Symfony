@@ -3,20 +3,22 @@
 namespace App\Controller;
 
 use App\Entity\TodoList;
+use App\Form\TodoListType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ListController extends AbstractController
+class TodoListController extends AbstractController
 {
-    #[Route("/", name: "read_all")]
+    /* #[Route("/", name: "read_all")]
     public function readAll(SessionInterface $session): Response
     {
         return $this->render("list/home.html.twig", ["lists" =>  $session->get("lists")]);
-    }
+    } */
 
-    #[Route("/read", name: "read")]
+    /* #[Route("/read", name: "read")]
     public function read(SessionInterface $session): Response
     {
         $list = $session->get("lists")[0];
@@ -24,20 +26,33 @@ class ListController extends AbstractController
             throw $this->createNotFoundException();
         }
         return $this->render("list/read.html.twig", ["list" => $list]);
-    }
+    } */
 
     #[Route("/create", name: "create")]
-    public function create(SessionInterface $session): Response
+    public function create(Request $request): Response
     {
-        $list1 = new TodoList(1, "Courses", "Liste de courses", ["Beurre", "Jus d'orange", "Riz", "Sucre"]);
+        /* $list1 = new TodoList(1, "Courses", "Liste de courses", ["Beurre", "Jus d'orange", "Riz", "Sucre"]);
         $list2 = new TodoList(2, "Séries", "Les séries à voir", ["Breaking Bad", "Friends"]);
         $list3 = new TodoList(3, "Films", "Les films à voir", ["Django", "Avatar", "Interstellar"]);
-        $session->set("lists", [$list1, $list2, $list3]);
-        $this->addFlash("success", "La liste '{$list1->getName()}' a été créée !");
-        return $this->redirectToRoute("read_all");
+        $session->set("lists", [$list1, $list2, $list3]); */
+
+        //$this->addFlash("success", "La liste '{$list1->getName()}' a été créée !");
+
+        $todoList = new TodoList();
+        $form = $this->createForm(TodoListType::class, $todoList);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($todoList); // À enregistrer en BDD
+            //$this->addFlash("success", "La liste '{$todoList->getName()}' a été créée !");
+        }
+        //return $this->redirectToRoute("read_all");
+        return $this->render("list/create.html.twig", [
+            "form" => $form->createView()
+        ]);
     }
 
-    #[Route("/delete", name: "delete")]
+    /* #[Route("/delete", name: "delete")]
     public function delete(SessionInterface $session): Response
     {
         $lists = $session->get("lists");
@@ -55,5 +70,5 @@ class ListController extends AbstractController
         $session->set("lists", $lists);
         $this->addFlash("warning", "La liste '{$lists[0]->getName()}' a été a été modifiée !");
         return $this->redirectToRoute("read_all");
-    }
+    } */
 }
