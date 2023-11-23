@@ -1,10 +1,19 @@
 {% extends "base.html.twig" %}
 
+{% block title %}
+	{{parent()}}
+	{% if type == "create" %}
+		Créer une liste
+	{% else %}
+		Modifier la liste
+		{{ todo_list.name }}
+	{% endif %}
+{% endblock %}
+
 {% block body %}
 	{{form_start(form)}}
 	{{form_row(form.name)}}
 	{{form_rest(form)}}
 	<input type="submit" value="Créer" class="btn btn-success">
 	{{form_end(form)}}
-
 {% endblock %}
