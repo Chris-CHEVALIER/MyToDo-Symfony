@@ -6,15 +6,15 @@
 				{{list.description}}
 			</p>
 			<p class="card-text">
-				{% for todo in list.todos %}
+				{% for task in list.tasks %}
 					<div>
-						<input type="checkbox" name="{{todo}}" id="{{todo}}">
-						<label for="{{todo}}">{{todo}}</label>
+						<input type="checkbox" name="{{task}}" id="{{task}}">
+						<label for="{{task}}">{{task}}</label>
 					</div>
 				{% endfor %}
 			</p>
 			{% if read %}
-				<a href="/read?listName={{list.name}}" class="btn btn-primary" title="Lire">
+				<a href="/read/{{list.id}}" class="btn btn-primary" title="Lire">
 					<i class="fa-regular fa-eye"></i>
 				</a>
 			{% endif %}

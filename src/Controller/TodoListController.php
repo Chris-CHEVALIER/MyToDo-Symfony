@@ -4,39 +4,43 @@ namespace App\Controller;
 
 use App\Entity\TodoList;
 use App\Form\TodoListType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class TodoListController extends AbstractController
 {
     #[Route("/", name: "read_all")]
-    public function readAll(SessionInterface $session): Response
+    public function readAll(ManagerRegistry $doctrine): Response
     {
-        return $this->render("list/home.html.twig", ["lists" =>  $session->get("lists")]);
+        $todoListRepository = $doctrine->getRepository(TodoList::class);
+        $todoLists = $todoListRepository->findAll();
+        return $this->render("list/home.html.twig", ["lists" =>  $todoLists]);
     }
 
-    #[Route("/read", name: "read")]
-    public function read(SessionInterface $session): Response
+    #[Route("/read/{id}", name: "read")]
+    public function read(TodoList $todoList): Response
     {
-        $list = $session->get("lists")[0];
-        if (!$list) {
+        if (!$todoList) {
             throw $this->createNotFoundException();
         }
-        return $this->render("list/read.html.twig", ["list" => $list]);
+        return $this->render("list/read.html.twig", ["list" => $todoList]);
     }
 
     #[Route("/create", name: "create")]
-    public function create(Request $request): Response
+    public function create(Request $request, ManagerRegistry $doctrine): Response
     {
         $todoList = new TodoList();
         $form = $this->createForm(TodoListType::class, $todoList);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($todoList); // À enregistrer en BDD
+            //dump($todoList);
+            $em = $doctrine->getManager();
+            $em->persist($todoList);
+            $em->flush();
             $this->addFlash("success", "La liste '{$todoList->getName()}' a été créée !");
             return $this->redirectToRoute("read_all");
         }
@@ -46,24 +50,25 @@ class TodoListController extends AbstractController
         ]);
     }
 
-    #[Route("/delete", name: "delete")]
-    public function delete(SessionInterface $session): Response
+    #[Route("/delete/{id}", name: "delete")]
+    public function delete(TodoList $todoList, ManagerRegistry $doctrine): Response
     {
-        $lists = $session->get("lists");
-        $removedList = array_shift($lists);
-        $session->set("lists", $lists);
-        $this->addFlash("danger", "La liste '{$removedList->getName()}' a été supprimée !");
+        $this->addFlash("danger", "La liste '{$todoList->getName()}' a été supprimée !");
+        $em = $doctrine->getManager();
+        $em->remove($todoList);
+        $em->flush();
         return $this->redirectToRoute("read_all");
     }
 
     #[Route("/update/{id}", name: "update")]
-    public function update(TodoList $todoList, Request $request): Response
+    public function update(TodoList $todoList, Request $request, ManagerRegistry $doctrine): Response
     {
         $form = $this->createForm(TodoListType::class, $todoList);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($todoList); // À mettre à jour en BDD
+            //dump($todoList); // À mettre à jour en BDD
+            $doctrine->getManager()->flush();
             $this->addFlash("warning", "La liste '{$todoList->getName()}' a été modifiée !");
             return $this->redirectToRoute("read_all");
         }
