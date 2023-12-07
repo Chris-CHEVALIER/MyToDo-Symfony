@@ -19,8 +19,7 @@
 			{{ todo_list.name }}
 		{% endif %}
 	</h1>
-	{{form_start(form)}}
-	{{form_row(form.name)}}
+	{{form_start(form, {"attr": {"novalidate":"novalidate"}})}}
 	{{form_rest(form)}}
 	{% if type == "create" %}
 		<input type="submit" value="Créer" class="btn btn-success">
@@ -28,4 +27,21 @@
 		<input type="submit" value="Modifier" class="btn btn-warning">
 	{% endif %}
 	{{form_end(form)}}
+
+
+	<script>
+		const percentOutput = document.createElement("output")
+		const todoListPercentInput = document.getElementById("todo_list_percent")
+		percentOutput.innerHTML = todoListPercentInput.value + "%"
+		insertAfter(percentOutput,  todoListPercentInput);
+		todoListPercentInput.addEventListener("change", () => {
+			percentOutput.innerHTML = todoListPercentInput.value + "%"
+			insertAfter(percentOutput,  todoListPercentInput);
+		})
+
+		function insertAfter(newNode, existingNode) {
+			existingNode.parentNode.insertBefore(newNode, existingNode.nextSibling);
+		}
+	</script>
+
 {% endblock %}

@@ -3,16 +3,14 @@
 namespace App\Form;
 
 use App\Entity\TodoList;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Date;
 
 class TodoListType extends AbstractType
 {
@@ -33,12 +31,23 @@ class TodoListType extends AbstractType
             ])
             ->add('color', ColorType::class, [
                 "label" => "Couleur",
-
                 //"required" => false
             ])
             ->add('date', DateType::class, [
-                'years' => range(date('Y'), date('Y')+100),
-            ]);
+                'years' => range(date('Y'), date('Y') + 100),
+            ])
+            ->add('percent', RangeType::class, [
+                'attr' => [
+                    'min' => 0,
+                    'max' => 100
+                ],
+                'data' => '0',
+                'required' => false,
+                'label' => 'Pourcentage',
+                'label_attr' => [
+                    'class' => 'form-label'
+                ],
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -6,11 +6,11 @@
 	{% endif %}
 
 	<form method="POST">
-		<label for="username">Nom d'utilisateur</label>
-		<input type="text" name="_username" id="username" value={{last_username}} class="form-control" placeholder="Votre nom d'utilisateur">
+		<label for="email">Adresse e-mail</label>
+		<input type="email" name="_username" id="email" value="{{last_email}}" class="form-control" placeholder="Votre e-mail">
 		<label for="password">Mot de passe</label>
 		<input type="password" name="_password" id="password" class="form-control" placeholder="Votre mot de passe">
-		<input type="submit" value="Se connecter" class="btn btn-primary">
+		<input type="submit" value="Se connecter" class="btn btn-primary mt-2">
 	</form>
 
 	<a href="/user/create">Pas de compte ? Créez un compte utilisateur !</a>

@@ -18,12 +18,15 @@
 					<i class="fa-regular fa-eye"></i>
 				</a>
 			{% endif %}
-			<a href="/update/{{list.id}}" class="btn btn-warning" title="Modifier">
-				<i class="fa-solid fa-pen"></i>
-			</a>
-			<a href="/delete/{{list.id}}" class="btn btn-danger" title="Supprimer">
-				<i class="fa-solid fa-trash"></i>
-			</a>
+
+			{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+				<a href="/update/{{list.id}}" class="btn btn-warning" title="Modifier">
+					<i class="fa-solid fa-pen"></i>
+				</a>
+				<a href="/delete/{{list.id}}" class="btn btn-danger" title="Supprimer">
+					<i class="fa-solid fa-trash"></i>
+				</a>
+			{% endif %}
 		</div>
 	</div>
 {% endmacro %}

@@ -32,6 +32,7 @@ class TodoListController extends AbstractController
     #[Route("/create", name: "create")]
     public function create(Request $request, ManagerRegistry $doctrine): Response
     {
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         $todoList = new TodoList();
         $form = $this->createForm(TodoListType::class, $todoList);
 
@@ -53,6 +54,7 @@ class TodoListController extends AbstractController
     #[Route("/delete/{id}", name: "delete")]
     public function delete(TodoList $todoList, ManagerRegistry $doctrine): Response
     {
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         $this->addFlash("danger", "La liste '{$todoList->getName()}' a été supprimée !");
         $em = $doctrine->getManager();
         $em->remove($todoList);
@@ -63,6 +65,7 @@ class TodoListController extends AbstractController
     #[Route("/update/{id}", name: "update")]
     public function update(TodoList $todoList, Request $request, ManagerRegistry $doctrine): Response
     {
+        $this->denyAccessUnlessGranted("IS_AUTHENTICATED_FULLY");
         $form = $this->createForm(TodoListType::class, $todoList);
         $form->handleRequest($request);
 

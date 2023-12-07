@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -38,12 +39,13 @@ class TodoList
     #[ORM\Column(type: "string", length: 7)]
     private string $color;
 
-    #[Assert\NotBlank(message: "La date ne peut pas être vide.")]
-    #[ORM\Column(type: "date")]
-    private $date;
+    #[ORM\Column(type: "datetime")]
+    private DateTime $date;
 
     #[ORM\OneToMany(mappedBy: 'todoList', targetEntity: Todo::class, orphanRemoval: true)]
     private Collection $tasks;
+
+    private int $percent = 0;
 
     public function __construct()
     {
@@ -139,6 +141,24 @@ class TodoList
                 $task->setTodoList(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of percent
+     */
+    public function getPercent(): int
+    {
+        return $this->percent;
+    }
+
+    /**
+     * Set the value of percent
+     */
+    public function setPercent(int $percent): self
+    {
+        $this->percent = $percent;
 
         return $this;
     }
