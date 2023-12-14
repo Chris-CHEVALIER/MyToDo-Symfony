@@ -33,7 +33,7 @@
 		const percentOutput = document.createElement("output")
 		const todoListPercentInput = document.getElementById("todo_list_percent")
 		percentOutput.innerHTML = todoListPercentInput.value + "%"
-		insertAfter(percentOutput,  todoListPercentInput);
+		insertAfter(percentOutput, todoListPercentInput);
 		todoListPercentInput.addEventListener("change", () => {
 			percentOutput.innerHTML = todoListPercentInput.value + "%"
 			insertAfter(percentOutput,  todoListPercentInput);
